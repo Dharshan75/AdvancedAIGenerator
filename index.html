@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced AI Logo Generator</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #1e1e2f, #2d2d44);
+      margin: 0;
+      padding: 20px;
+      color: white;
+    }
+    .card {
+      max-width: 720px;
+      margin: auto;
+      background: #ffffff15;
+      backdrop-filter: blur(12px);
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #00aaff;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0088dd;
+    }
+    canvas {
+      margin-top: 20px;
+      width: 100%;
+      border-radius: 14px;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Advanced AI Logo Generator</h2>
+
+    <input id="prompt" placeholder="Brand name or prompt (e.g., Tech Sphere AI)" />
+
+    <select id="style">
+      <option value="minimal">Minimal</option>
+      <option value="futuristic">Futuristic</option>
+      <option value="3d">3D Style</option>
+      <option value="neon">Neon Glow</option>
+      <option value="retro">Retro 90s</option>
+    </select>
+
+    <button onclick="generateAdvancedLogo()">Generate Advanced Logo</button>
+
+    <canvas id="logoCanvas" width="700" height="350"></canvas>
+
+    <button onclick="downloadLogo()" style="margin-top:10px;background:#22cc88;">Download PNG</button>
+  </div>
+
+<script>
+function generateAdvancedLogo() {
+  const prompt = document.getElementById("prompt").value || "AI Logo";
+  const style = document.getElementById("style").value;
+
+  const canvas = document.getElementById("logoCanvas");
+  const ctx = canvas.getContext("2d");
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const gradients = {
+    minimal: ["#222", "#555"],
+    futuristic: ["#00c6ff", "#0072ff"],
+    neon: ["#0f0", "#0ff"],
+    retro: ["#ff7f50", "#ff1493"],
+    "3d": ["#1e90ff", "#0047ab"],
+  };
+
+  const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  grad.addColorStop(0, gradients[style][0]);
+  grad.addColorStop(1, gradients[style][2] || gradients[style][1]);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.font = "bold 60px Poppins";
+  ctx.fillStyle = "white";
+  ctx.shadowColor = style === "neon" ? "cyan" : "black";
+  ctx.shadowBlur = style === "neon" ? 25 : 10;
+  ctx.fillText(prompt, 50, 180);
+
+  ctx.shadowBlur = 0;
+
+  ctx.font = "20px Poppins";
+  ctx.fillStyle = "#e0e0e0";
+  ctx.fillText("AI Generated Logo Concept", 50, 230);
+
+  drawSymbol(ctx, style);
+}
+
+function drawSymbol(ctx, style) {
+  ctx.save();
+  ctx.translate(600, 120);
+  ctx.scale(1.4, 1.4);
+
+  ctx.beginPath();
+  ctx.arc(0, 0, 40, 0, Math.PI * 2);
+
+  if (style === "neon") {
+    ctx.shadowColor = "cyan";
+    ctx.shadowBlur = 20;
+  }
+
+  ctx.fillStyle = "white";
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function downloadLogo() {
+  const canvas = document.getElementById("logoCanvas");
+  const link = document.createElement("a");
+  link.download = "ai_logo.png";
+  link.href = canvas.toDataURL();
+  link.click();
+}
+</script>
+
+</body>
+</html>
